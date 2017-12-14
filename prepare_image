@@ -1,0 +1,12 @@
+import cv2  
+
+img = cv2.imread("C:\Users\User\Desktop\f_and_python\Images\4.jpg", 1)                                           # Загружаем изображени
+cv2.imshow("original", img)                                                                                      # Отрисовываем изображение
+gray = cv2.cvtColor(img, cv.COLOR_BGR2GRAY)                                                                      # Конвертируем цветное изображение в монохромное
+gray = cv2.GaussianBlur(gray, (7, 7), 1.5)
+#gray = cv2.GaussianBlur(gray, (3, 3),0)                                                                         # Добавляем размытие
+edges = cv2.Canny(gray, 0, 50)                                                                                   # Запускаем детектор ребер
+cv2.imshow("edges", edges)                                                                                       #Отображаем результат
+# edged = cv2.Canny(gray,10,250)
+# cv2.imwrite("edged.jpg", edged)                                                                                      
+cv2.waitKey()   
