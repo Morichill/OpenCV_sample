@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from mplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 	
 #загружаем и отображаем избражение
 image = cv2.imread('image.jpg')   
@@ -14,12 +14,12 @@ cv2.waitKey(0)
 
 #пример использования  функций OpenCV. Метод Оцу
 # глобальное пороговое значение
-ret1, th1 = cv2.threshold (channel2, 127,255, cv2.THRESH_BINARY)
+ret1, th1 = cv2.threshold (red, 127,255, cv2.THRESH_BINARY)
 # Потенциал Otsu
-ret2, th2 = cv2.threshold (channel2, 0,255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+ret2, th2 = cv2.threshold (red, 0,255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
 # Порог Otsu после гауссовой фильтрации
-blur = cv2.GaussianBlur (channel2, (5,5), 0)
+blur = cv2.GaussianBlur (red, (5,5), 0)
 ret3, th3 = cv2.threshold (blur, 0,255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
  
 # отобразите все изображения и их гистограммы
@@ -27,17 +27,17 @@ images = [channel2, 0, th1,
           channel2, 0, th2,
           blur, 0, th3]
 title = [ 'Original Noisy Image' , 'Histogram' , 'Global Thresholding (v = 127)' ,
-           'Оригинальное шумовое изображение' , 'Гистограмма' , 'Порог Отсу' ,
-           'Гауссово фильтрованное изображение' , 'Гистограмма' , 'Порог Отсу' )
+          'Оригинальное шумовое изображение' , 'Гистограмма' , 'Порог Отсу' ,
+          'Гауссово фильтрованное изображение' , 'Гистограмма' , 'Порог Отсу' )
 
-   for i in xrange(3):
+for i in xrange(3):
        plt.subplot(3,3,i*3+1),plt.imshow(images[i*3],'gray')
        plt.title(titles[i*3]), plt.xticks([]), plt.yticks([])
        plt.subplot(3,3,i*3+2),plt.hist(images[i*3].ravel(),256)
        plt.title(titles[i*3+1]), plt.xticks([]), plt.yticks([])
        plt.subplot(3,3,i*3+3),plt.imshow(images[i*3+2],'gray')
        plt.title(titles[i*3+2]), plt.xticks([]), plt.yticks([])
- plt.show()
+plt.show()
  
  
  #Реализация метода Оцу
@@ -86,7 +86,7 @@ varMax =0
 total = len(red.ravel()) 
 for i in range(len(hist)):
     wb += hist[i]/sum_all  
-    print wb
+    print (wb)
     if wb == 0:
         continue
     wf = total - hist[i]
@@ -100,7 +100,7 @@ for i in range(len(hist)):
         varMax = varBetween
         T = i
     
-print T
+print (T)
 bw1 = T
 red_new_th = []      
 for row in red:
@@ -108,10 +108,10 @@ for row in red:
     for el in row:
         if el >= bw1: 
             row1.append(255)
-            #print el, T, "255"
+            #print (el, T, "255")
         else:
             row1.append(0)
-            #print el, T, "0"
+            #print (el, T, "0")
     red_new_th.append(row1) 
 red_new_th = np.array(red_new_th)
 cv2.imwrite('my_otsu.png',red_new_th) # метод Оцу
